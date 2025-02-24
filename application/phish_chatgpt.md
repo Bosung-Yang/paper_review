@@ -1,7 +1,7 @@
 # Detecting Phishing Sites Using ChatGPT : Paper Review & Code Implementation
 
 Phising site detecting method have developed with the success of machine learning.    
-In this story, we review a research paper "Detecting Phishing Sites Using ChatGPT" that leverages LLM for detecting phishing sites.   
+This story review a research paper "Detecting Phishing Sites Using ChatGPT" that leverages LLM for detecting phishing sites.   
 The main idea is super simple, but it's effective when I used this method.
 
 You can read this paper here: https://arxiv.org/pdf/2306.05816
@@ -61,4 +61,15 @@ HTML:
 Text extracted using OCR:
 ``` {OCR-extracted text} ```
 ```
-The 4-step CoT shows its effectiveness for detecting phising sites.
+This 4-step CoT shows its effectiveness for detecting phising sites.
+
+### Simplfy HTML
+Since Full HTML of web site is too long to be adpated to LLMs, the authors simplify HTML to reduce token length for LLMs.
+The simplifying procedure is as follows:  
+- Remove & Unwrap unimportant HTML elements such as style, script, and comment tags
+- Shorten href and src
+- Repeat this for when token length becomes lower than 3000.
+
+### Experiments
+The 
+### My Opinion
