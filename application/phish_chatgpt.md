@@ -1,28 +1,26 @@
-# Detecting Phishing Sites Using ChatGPT : Paper Review & Code Implementation
-
-Phising site detecting method have developed with the success of machine learning.    
-This story review a research paper "Detecting Phishing Sites Using ChatGPT" that leverages LLM for detecting phishing sites.   
-The main idea is super simple, but it's effective when I used this method.
+# Detecting Phishing Sites Using ChatGPT: A Paper Review
+The methods for detecting phishing sites have evolved with the success of machine learning.  
+This post reviews a research paper titled "Detecting Phishing Sites Using ChatGPT," which leverages large language models (LLMs) to identify phishing sites.  
+The main idea is simple, yet highly effective based on my experience with this method.
 
 You can read this paper here: https://arxiv.org/pdf/2306.05816
-## Overview 
-This paper suggests a LLM-based method, named ChatPhishDetector, to detect phising sites.  
-The key to ChatPhishDetector is as follows:  
-- Prompt Enginnering
-- Screenshot & OCR (select one option)  
 
+## Overview  
+This paper proposes an LLM-based method called ChatPhishDetector to detect phishing sites.  
+The key components of ChatPhishDetector are as follows:  
+- Prompt Engineering  
+- Screenshot & OCR (choose one option)  
 
-![alt text](image.png)  
-The above figure shows the construction of ChatPhishDetector. It has two variables, one is normal mode and the other is vision mode.
+![ChatPhishDetector Overview](image.png)  
+The figure above shows the architecture of ChatPhishDetector. It consists of two modes: normal mode and vision mode.
 
-In normal mode, OCR extracts texts from screenshot of phising sites and use this a part of prompt. 
+In normal mode, OCR extracts text from screenshots of phishing sites and uses this text as part of the prompt.  
+In vision mode, the screenshot is provided as input to a multi-modal inference service.
 
-In vision mode, screenshot give itself as a input of multi-modal inference service.
+### Prompt Engineering
+This paper designs the prompt based on Chain-of-Thought (CoT), which encourages LLMs to explain their reasoning step by step.
 
-### Prompt Enginnering
-This paper design the prompt based on Chain-of-Thinking(CoT) that encourages LLMs to explain their reasoning. 
-
-The proposed prompt (normal mode) is here:
+The proposed prompt for normal mode is shown below:
 ```
 You are a web programmer and security expert tasked with examining a web page to determine if it is a phishing site or a legitimate site. To complete this task, follow these sub-tasks:
 
@@ -61,15 +59,30 @@ HTML:
 Text extracted using OCR:
 ``` {OCR-extracted text} ```
 ```
-This 4-step CoT shows its effectiveness for detecting phising sites.
+This 4-step Chain-of-Thought (CoT) method demonstrates its effectiveness in detecting phishing sites.
 
-### Simplfy HTML
-Since Full HTML of web site is too long to be adpated to LLMs, the authors simplify HTML to reduce token length for LLMs.
-The simplifying procedure is as follows:  
-- Remove & Unwrap unimportant HTML elements such as style, script, and comment tags
-- Shorten href and src
-- Repeat this for when token length becomes lower than 3000.
+### Simplify HTML
+Since the full HTML of a website is too lengthy to be processed by LLMs, the authors simplify the HTML to reduce the token length for better performance.
 
-### Experiments
-The 
-### My Opinion
+The procedure for simplifying HTML is as follows:  
+- Remove and unwrap unnecessary HTML elements, such as `style`, `script`, and `comment` tags.  
+- Shorten `href` and `src` attributes.  
+- Repeat this process until the token length is reduced to below 3000.
+
+### Evaluation  
+To evaluate ChatPhishDetector, the paper used three phishing site datasets (OpenPhish, PhishTank, and CrowdCanary) and one non-phishing dataset, the Tranco list.
+
+![ChatPhishDetector Evaluation](image-1.png)  
+From the figure above, we can observe some interesting results.
+
+#### Vision Mode vs. Normal Mode  
+The main difference between the two modes is whether OCR is applied to the screenshot of the webpage. In vision mode, the raw screenshot is used as input for GPT, whereas in normal mode, OCR-extracted text is used as input. When comparing the two modes, vision mode achieved higher performance, suggesting that it is a better choice for most users, as it avoids the complexity of extracting text with OCR.
+
+#### Model Choice  
+When compared with various models (GPT, Llama, Gemini), GPT-4 achieved the highest performance. The other models recorded lower recall. Considering their service costs, using cheaper services such as GPT-3.5 ($0.008 per sample) is much more cost-effective compared to using the more expensive models (e.g., $0.179 per sample).
+
+### My Thoughts
+The proposed method mainly focuses on prompt engineering for detecting phishing sites.  
+I believe the main advantage is that readers can easily adapt this method using LLM services like ChatGPT.  
+This method can also be easily extended to detect other types of malicious sites, such as gambling and adult sites.  
+When I made adjustments to certain parts of the prompt, the detection worked effectively.
